@@ -81,7 +81,7 @@ fun Route.routeSecurity(hashingCost: Int, bCrypt: Hasher) {
 
         if (result.insertedId != null) {
             // Create cookie
-            call.sessions.set(UserSession(result.insertedId!!.toString()))
+            call.sessions.set(UserSession(result.insertedId!!.asObjectId().value.toString()))
             call.respondRedirect("/questions")
         } else {
             call.respond(HttpStatusCode.InternalServerError)

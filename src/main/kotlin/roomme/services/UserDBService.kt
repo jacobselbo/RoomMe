@@ -2,6 +2,7 @@ package roomme.services
 
 import com.mongodb.client.model.Filters
 import kotlinx.coroutines.flow.firstOrNull
+import org.bson.types.ObjectId
 import roomme.plugins.UserSession
 import roomme.serializables.User
 
@@ -9,7 +10,7 @@ class UserDBService private constructor(mongoService: MongoService) {
     val users = mongoService.database.getCollection<User>("users")
 
     suspend fun getUserFromSession(session: UserSession): User? {
-        return users.find(Filters.eq("_id", session.id)).firstOrNull()
+        return users.find(Filters.eq("_id", ObjectId(session.id))).firstOrNull()
     }
 
     companion object {

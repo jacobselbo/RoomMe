@@ -3,15 +3,7 @@ package roomme.routes.api
 import io.ktor.server.routing.*
 
 fun Route.routeUserAPI() {
-    // TODO
-    get("/api/user/next") {
+    route("/api/user/") {
 
     }
-
-    // TODO
-    get("/api/user/messages") {
-
-    }
-
-
 }
