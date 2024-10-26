@@ -1,5 +1,9 @@
 package roomme.algo
 
 fun configureAlgo() {
-    AlgoSingleton.createInstance(0.0, 10.0, 10)
+    AlgoSingleton.createInstance(0.0, 10.0, 6)
+}
+
+fun createQuestionEntry(user: User): QuestionEntry {
+
 }

@@ -3,7 +3,7 @@ package roomme.algo
 import kotlin.math.max
 import kotlin.math.sqrt
 
-class QuestionEntry(vector: Array<Double>) {
+class QuestionEntry(val gender: Boolean, val attract: Boolean, vector: Array<Double>) {
     private var vector: Array<Double> = Array(AlgoSingleton.getEntryNumber()) {
         (vector[it] - AlgoSingleton.getLowerScale()) / (AlgoSingleton.getUpperScale() - AlgoSingleton.getLowerScale())
     }
