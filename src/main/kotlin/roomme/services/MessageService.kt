@@ -1,10 +1,15 @@
 package roomme.services
 
+import io.ktor.websocket.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.bson.types.ObjectId
+import roomme.plugins.SockMessage
 
-interface MessageHandler {
-    fun handle(sender: ObjectId, message: String): Boolean
-}
+data class MessageHandler(
+    val id: ObjectId,
+    val sock: WebSocketSession
+)
 
 class MessageService {
     private val handlers: HashMap<ObjectId, MessageHandler> = HashMap()
@@ -25,17 +30,25 @@ class MessageService {
             return instance as MessageService
         }
 
-        fun register(id: ObjectId, handler: MessageHandler) {
+        suspend fun register(id: ObjectId, handler: MessageHandler) {
+            if (id in instance!!.handlers)
+                close(id)
             instance!!.handlers[id] = handler
         }
 
-        fun sendMessage(sender: ObjectId, receiver: ObjectId, message: String) {
-            instance!!.handlers[receiver]?.handle(sender, message)
-            MessageDBService.messageSent(sender, receiver, message)
+        suspend fun sendMessage(sender: ObjectId, receiver: ObjectId, message: String) {
+            val timestamp = System.currentTimeMillis()
+            val msg = SockMessage(sender.toString(), message, timestamp)
+            instance!!.handlers[receiver]?.sock?.send(
+                Frame.Text(Json.encodeToString(msg))
+            )
+            MessageDBService.messageSent(sender, receiver, message, timestamp)
         }
 
-        fun close(id: ObjectId) {
-            instance!!.handlers.remove(id)
+        suspend fun close(id: ObjectId) {
+            instance!!.handlers[id]?.sock?.close()
+            if (id in instance!!.handlers)
+                instance!!.handlers.remove(id)
         }
     }
 }

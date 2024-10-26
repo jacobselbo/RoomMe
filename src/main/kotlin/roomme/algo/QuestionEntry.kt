@@ -23,7 +23,7 @@ class QuestionEntry(
             ))
     }
 
-    fun compareTo(other: QuestionEntry): Double {
+    fun matchScore(other: QuestionEntry): Double {
         if (other.gender == attract || gender == other.attract)
             return 0.0
 

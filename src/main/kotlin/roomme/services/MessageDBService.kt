@@ -1,7 +1,6 @@
 package roomme.services
 
 import org.bson.types.ObjectId
-import org.slf4j.LoggerFactory
 import roomme.serializables.Message
 
 class MessageDBService private constructor(mongoService: MongoService) {
@@ -14,7 +13,7 @@ class MessageDBService private constructor(mongoService: MongoService) {
                     error("MessageDBService is not initialized.")
                 }
 
-                return field;
+                return field
             }
             private set
 
@@ -24,7 +23,7 @@ class MessageDBService private constructor(mongoService: MongoService) {
         }
 
         // TODO: messageSent implement to add message to database
-        fun messageSent(sender: ObjectId, receiver: ObjectId, message: String) {
+        fun messageSent(sender: ObjectId, receiver: ObjectId, message: String, timestamp: Long) {
 
         }
     }
