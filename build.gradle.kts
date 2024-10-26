@@ -1,8 +1,11 @@
 val kotlin_version: String by project
 val logback_version: String by project
+val mongodb_version: String by project
+val bson_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.21"
+
     id("io.ktor.plugin") version "3.0.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
@@ -31,7 +34,13 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:$mongodb_version") // MongoDB driver
+
+    implementation("org.mongodb:bson-kotlinx:$bson_version") // BSON serializer for MongoDB driver
+
+    implementation("ch.qos.logback:logback-classic:$logback_version") // Logging
+
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
