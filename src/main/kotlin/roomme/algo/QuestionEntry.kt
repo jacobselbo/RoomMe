@@ -8,7 +8,7 @@ class QuestionEntry(vector: Array<Double>) {
     }
 
     fun compareTo(other: QuestionEntry): Double {
-        var dot = 0.0;
+        var dot = 0.0
         for (i in vector.indices) {
             dot += (other.vector[i] - vector[i]) * (other.vector[i] - vector[i])
         }
