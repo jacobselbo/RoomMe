@@ -35,6 +35,9 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-websockets")
+
+    implementation("at.favre.lib:bcrypt:$bcrypt_version") // Hashing for passwords
 
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:$mongodb_version") // MongoDB driver
 

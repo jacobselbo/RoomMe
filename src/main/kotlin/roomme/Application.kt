@@ -3,7 +3,7 @@ package roomme
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import roomme.algo.configureAlgo
+import io.ktor.server.websocket.*
 import roomme.plugins.*
 
 fun main() {
@@ -12,7 +12,6 @@ fun main() {
 }
 
 fun Application.module() {
-    configureAlgo()
     // configureSecurity()
     configureSerialization()
     configureSingletons()

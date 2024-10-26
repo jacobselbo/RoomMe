@@ -6,20 +6,27 @@ import roomme.services.AlgoService
 import kotlin.math.max
 import kotlin.math.sqrt
 
-class QuestionEntry(val gender: Boolean, val attract: Boolean, vector: Array<Double>) {
-    private var vector: Array<Double> = Array(AlgoSingleton.getEntryNumber()) {
-        (vector[it] - AlgoSingleton.getLowerScale()) / (AlgoSingleton.getUpperScale() - AlgoSingleton.getLowerScale())
+class QuestionEntry(
+    private val gender: Boolean,
+    private val attract: Boolean,
+    vector: Array<Int>
+) {
+    private var vector: Array<Double> = Array(AlgoService.getEntryNumber()) {
+        (vector[it] - AlgoService.getLowerScale()) / (AlgoService.getUpperScale() - AlgoService.getLowerScale())
     }
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     init {
-        assert(vector.size == AlgoSingleton.getEntryNumber()) {
-            "Vector size should be %d, but was %d".format(
-                AlgoSingleton.getEntryNumber(), vector.size
-            )
-        }
+        if (vector.size != AlgoService.getEntryNumber())
+            logger.error("Vector size should be %d, but was %d".format(
+                AlgoService.getEntryNumber(), vector.size
+            ))
     }
 
     fun compareTo(other: QuestionEntry): Double {
+        if (other.gender == attract || gender == other.attract)
+            return 0.0
+
         var dot = 0.0
         var entries = 0
         for (i in vector.indices) {

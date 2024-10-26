@@ -1,21 +1,21 @@
 package roomme.services
 
-class AlgoSingleton private constructor(
+class AlgoService private constructor(
     private val lowerScale: Double,
     private val upperScale: Double,
     private val entryNumber: Int
 ) {
 
     companion object {
-        private var instance: AlgoSingleton? = null
+        private var instance: AlgoService? = null
 
-        fun getInstance(): AlgoSingleton {
-            return instance as AlgoSingleton
+        private fun getInstance(): AlgoService {
+            return instance as AlgoService
         }
 
-        fun createInstance(lowerScale: Double, upperScale: Double, entryNumber: Int): AlgoSingleton {
-            instance = AlgoSingleton(lowerScale, upperScale, entryNumber)
-            return instance as AlgoSingleton
+        fun createInstance(lowerScale: Double, upperScale: Double, entryNumber: Int): AlgoService {
+            instance = AlgoService(lowerScale, upperScale, entryNumber)
+            return instance as AlgoService
         }
 
         fun getLowerScale(): Double {
