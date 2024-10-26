@@ -8,15 +8,15 @@ class MongoService(username: String, password: String) {
     val database = client.getDatabase("roomme")
 
     companion object {
-        private var instance: MongoService? = null
+        var instance: MongoService? = null
+            get() {
+                if (field == null) {
+                    error("MongoService is not initialized.")
+                }
 
-        fun getInstance(): MongoService {
-            if (instance == null) {
-                error("MongoService is not initialized.")
+                return field;
             }
-
-            return instance as MongoService
-        }
+            private set
 
         fun createInstance(username: String, password: String): MongoService {
             instance = MongoService(username, password)

@@ -1,8 +1,7 @@
 package roomme.plugins
 
 import io.ktor.server.application.*
-import roomme.services.MongoService
-import roomme.services.UserService
+import roomme.services.*
 
 fun Application.configureSingletons() {
     val mongoUsername = environment.config.property("mongodb.username").getString()
@@ -10,5 +9,12 @@ fun Application.configureSingletons() {
 
     // Set up database
     val mongoService = MongoService.createInstance(mongoUsername, mongoPassword)
-    UserService.createInstance(mongoService)
+    UserDBService.createInstance(mongoService)
+    MessageDBService.createInstance(mongoService)
+
+    // Set up Message Event Handler
+    MessageService.createInstance()
+
+    // Configure Algo Service
+    AlgoService.createInstance(0.0, 10.0, 6)
 }

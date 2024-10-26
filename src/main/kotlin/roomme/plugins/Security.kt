@@ -1,5 +1,7 @@
 package roomme.plugins
 
+import at.favre.lib.crypto.bcrypt.BCrypt
+import com.mongodb.client.model.Filters
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -8,64 +10,50 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import io.ktor.util.*
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.*
+import roomme.Utilities
+import roomme.services.UserDBService
 
 fun Application.configureSecurity() {
-    authentication {
-        oauth("auth-oauth-google") {
-            urlProvider = { "http://localhost:8080/callback" }
-            providerLookup = {
-                OAuthServerSettings.OAuth2ServerSettings(
-                    name = "google",
-                    authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
-                    accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
-                    requestMethod = HttpMethod.Post,
-                    clientId = System.getenv("GOOGLE_CLIENT_ID"),
-                    clientSecret = System.getenv("GOOGLE_CLIENT_SECRET"),
-                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile")
-                )
-            }
-            client = HttpClient(Apache)
+    val hashingCost: Int = environment.config.property("mongodb.hashingCost").getString().toInt()
+
+    val encryptKey = hex(environment.config.property("session.encryptKey").getString())
+    val signKey = hex(environment.config.property("session.signKey").getString())
+
+    val bCrypt = BCrypt.withDefaults()
+    val userService = UserDBService.instance!!
+
+    install(Sessions) {
+        cookie<UserIdPrincipal>("user_session") {
+            cookie.path = "/"
+            transform(SessionTransportTransformerEncrypt(encryptKey, signKey))
         }
     }
+
     authentication {
-        basic(name = "myauth1") {
-            realm = "Ktor Server"
+        form(name = "auth-form") {
+            userParamName = "email"
+            passwordParamName = "password"
+
             validate { credentials ->
-                if (credentials.name == credentials.password) {
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    null
+                if (!credentials.name.matches(Utilities.EMAIL_REGEX) ||
+                    !credentials.password.matches(Utilities.PASSWORD_REGEX)) { null } else {
+                    val user = userService.users.find(Filters.eq("email", credentials.name)).firstOrNull()
+
+                    if (user == null) { null } else {
+                        val hash = bCrypt.hash(hashingCost, user.salt, credentials.password.toByteArray())
+
+                        if (hash.contentEquals(user.password)) {
+                            UserIdPrincipal(user.id.toString())
+                        } else null
+                    }
                 }
             }
         }
-
-        form(name = "myauth2") {
-            userParamName = "user"
-            passwordParamName = "password"
-            challenge {
-                /**/
-            }
-        }
-    }
-    data class MySession(val count: Int = 0)
-    install(Sessions) {
-        cookie<MySession>("MY_SESSION") {
-            cookie.extensions["SameSite"] = "lax"
-        }
     }
     routing {
-        authenticate("auth-oauth-google") {
-            get("login") {
-                call.respondRedirect("/callback")
-            }
-
-            get("/callback") {
-                val principal: OAuthAccessTokenResponse.OAuth2? = call.authentication.principal()
-                call.sessions.set(UserSession(principal?.accessToken.toString()))
-                call.respondRedirect("/hello")
-            }
-        }
         authenticate("myauth1") {
             get("/protected/route/basic") {
                 val principal = call.principal<UserIdPrincipal>()!!
@@ -78,12 +66,5 @@ fun Application.configureSecurity() {
                 call.respondText("Hello ${principal.name}")
             }
         }
-        get("/session/increment") {
-            val session = call.sessions.get<MySession>() ?: MySession()
-            call.sessions.set(session.copy(count = session.count + 1))
-            call.respondText("Counter is ${session.count}. Refresh to increment.")
-        }
     }
 }
-
-class UserSession(accessToken: String)

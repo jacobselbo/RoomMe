@@ -1,23 +1,21 @@
 package roomme.services
 
-import roomme.serializables.Message
-
-class MessageService private constructor(mongoService: MongoService) {
-    val messages = mongoService.database.getCollection<Message>("messages")
+class MessageService {
+    private val handlers: HashMap<ObjectId, MessageHandler> = HashMap()
 
     companion object {
-        private var instance: MessageService? = null
+        var instance: MessageService? = null
+            get() {
+                if (field == null) {
+                    error("MessageService is not initialized.")
+                }
 
-        fun getInstance(): MessageService {
-            if (instance == null) {
-                error("MessageService is not initialized.")
+                return field
             }
+            private set
 
-            return instance as MessageService
-        }
-
-        fun createInstance(mongoService: MongoService): MessageService {
-            instance = MessageService(mongoService)
+        fun createInstance(): MessageService {
+            instance = MessageService()
             return instance as MessageService
         }
     }

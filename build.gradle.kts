@@ -2,6 +2,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val mongodb_version: String by project
 val bson_version: String by project
+val bcrypt_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.21"

@@ -1,8 +1,7 @@
 package roomme.algo
 
-fun configureAlgo() {
-    AlgoSingleton.createInstance(0.0, 10.0, 6)
-}
+import io.ktor.server.application.*
+import roomme.serializables.User
 
 fun createQuestionEntry(user: User): QuestionEntry {
 

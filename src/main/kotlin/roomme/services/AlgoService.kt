@@ -1,10 +1,10 @@
-package roomme.algo
+package roomme.services
 
 class AlgoSingleton private constructor(
     private val lowerScale: Double,
     private val upperScale: Double,
-    private val entryNumber: Int,
-    ) {
+    private val entryNumber: Int
+) {
 
     companion object {
         private var instance: AlgoSingleton? = null

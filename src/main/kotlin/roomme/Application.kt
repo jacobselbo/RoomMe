@@ -15,5 +15,7 @@ fun Application.module() {
     configureAlgo()
     // configureSecurity()
     configureSerialization()
+    configureSingletons()
+    configureSockets()
     configureRouting()
 }
