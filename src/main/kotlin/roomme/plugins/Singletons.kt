@@ -13,8 +13,8 @@ fun Application.configureSingletons() {
     MessageDBService.createInstance(mongoService)
 
     // Set up Message Event Handler
-    MessageService.createInstance()
+    //MessageService.createInstance()
 
     // Configure Algo Service
-    AlgoService.createInstance(0.0, 10.0, 6)
+    //AlgoService.createInstance(0.0, 10.0, 6)
 }

@@ -36,6 +36,9 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("io.ktor:ktor-server-websockets")
+    implementation("io.ktor:ktor-server-config-yaml")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     implementation("at.favre.lib:bcrypt:$bcrypt_version") // Hashing for passwords
 

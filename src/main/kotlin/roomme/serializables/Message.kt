@@ -1,5 +1,6 @@
 package roomme.serializables
 
+import org.bson.BsonTimestamp
 import org.bson.BsonType
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonRepresentation
@@ -12,5 +13,6 @@ data class Message(
     @BsonId
     @BsonRepresentation(BsonType.OBJECT_ID)
     val receiver: ObjectId,
-    val message: String
+    val message: String,
+    val timestamp: BsonTimestamp
 )

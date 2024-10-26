@@ -2,19 +2,18 @@ package roomme.plugins
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.mongodb.client.model.Filters
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.*
 import roomme.Utilities
 import roomme.services.UserDBService
+
+@Serializable
+data class UserSession(val id: String)
 
 fun Application.configureSecurity() {
     val hashingCost: Int = environment.config.property("mongodb.hashingCost").getString().toInt()
@@ -26,14 +25,14 @@ fun Application.configureSecurity() {
     val userService = UserDBService.instance!!
 
     install(Sessions) {
-        cookie<UserIdPrincipal>("user_session") {
+        cookie<UserSession>("user_session") {
             cookie.path = "/"
             transform(SessionTransportTransformerEncrypt(encryptKey, signKey))
         }
     }
 
     authentication {
-        form(name = "auth-form") {
+        form("auth-form") {
             userParamName = "email"
             passwordParamName = "password"
 
@@ -46,24 +45,24 @@ fun Application.configureSecurity() {
                         val hash = bCrypt.hash(hashingCost, user.salt, credentials.password.toByteArray())
 
                         if (hash.contentEquals(user.password)) {
-                            UserIdPrincipal(user.id.toString())
+                            UserSession(user.id.toString())
                         } else null
                     }
                 }
             }
-        }
-    }
-    routing {
-        authenticate("myauth1") {
-            get("/protected/route/basic") {
-                val principal = call.principal<UserIdPrincipal>()!!
-                call.respondText("Hello ${principal.name}")
+            challenge {
+                call.respondRedirect("/login#failure")
             }
         }
-        authenticate("myauth2") {
-            get("/protected/route/form") {
-                val principal = call.principal<UserIdPrincipal>()!!
-                call.respondText("Hello ${principal.name}")
+        session("auth-session") {
+            validate { session ->
+                if (userService.getUserFromSession(session) != null)
+                    session
+                else null
+            }
+
+            challenge {
+                call.respondRedirect("/login")
             }
         }
     }

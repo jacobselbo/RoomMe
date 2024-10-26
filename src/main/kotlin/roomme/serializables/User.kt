@@ -8,17 +8,26 @@ import org.bson.types.ObjectId
 data class User(
     @BsonId
     @BsonRepresentation(BsonType.OBJECT_ID)
-    val id: ObjectId,
+    val id: ObjectId?,
     val email: String,
     val password: ByteArray, // Salt-Pepper SHA256 Hashed
     val salt: ByteArray,
 
+    val questionsAnswered: Boolean,
+
     // Bio
+    val fullName: String,
     val bio: String,
     val age: Int,
     val major: String,
     val hometown: String,
     val images: Array<String>,
+
+    val currentMatches: Array<ObjectId>, // Active matches
+    val toMatchWith: Array<ObjectId>, // Users that liked this user, must be shown next to test
+
+    val liked: Array<ObjectId>, // Roomates that were liked
+    val disliked: Array<ObjectId>, // Disliked roomates
 
     // Questions
     val gender: Boolean,

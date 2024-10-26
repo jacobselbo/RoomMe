@@ -1,15 +1,15 @@
 package roomme.services
 
 import com.mongodb.client.model.Filters
-import io.ktor.server.auth.*
 import kotlinx.coroutines.flow.firstOrNull
+import roomme.plugins.UserSession
 import roomme.serializables.User
 
 class UserDBService private constructor(mongoService: MongoService) {
     val users = mongoService.database.getCollection<User>("users")
 
-    suspend fun getUserFromSession(session: UserIdPrincipal): User? {
-        return users.find(Filters.eq("_id", session.name)).firstOrNull()
+    suspend fun getUserFromSession(session: UserSession): User? {
+        return users.find(Filters.eq("_id", session.id)).firstOrNull()
     }
 
     companion object {

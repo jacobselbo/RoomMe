@@ -1,0 +1,20 @@
+ktor:
+  deployment:
+    port: 8080
+    host: 0.0.0.0
+  application:
+    modules:
+      - roomme.plugins.SerializationKt.configureSerialization
+      - roomme.plugins.SingletonsKt.configureSingletons
+      - roomme.plugins.SecurityKt.configureSecurity
+      - roomme.plugins.RoutingKt.configureRouting
+#      - roomme.plugins.SocketsKt.configureSockets
+
+mongodb:
+  username: selboajacob
+  password: $mongodbPassword
+  hashingCost: 8
+
+session:
+  encryptKey: $sessionEncryptKey
+  signKey: $sessionSignKey
