@@ -46,7 +46,7 @@ fun Application.configureSecurity() {
                         val hash = bCrypt.hash(hashingCost, user.salt, credentials.password.toByteArray())
 
                         if (hash.contentEquals(user.password)) {
-                            UserSession(user.id.toString())
+                            UserSession(user.id!!.toString())
                         } else null
                     }
                 }

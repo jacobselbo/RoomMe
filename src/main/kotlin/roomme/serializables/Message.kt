@@ -1,15 +1,26 @@
 package roomme.serializables
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import org.bson.BsonTimestamp
-import org.bson.BsonType
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import org.bson.codecs.kotlinx.ObjectIdSerializer
 import org.bson.codecs.pojo.annotations.BsonId
-import org.bson.codecs.pojo.annotations.BsonRepresentation
 import org.bson.types.ObjectId
+import java.util.*
+
+object DateLongSerializer : KSerializer<Date> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.LONG)
+    override fun serialize(encoder: Encoder, value: Date) = encoder.encodeLong(value.time)
+    override fun deserialize(decoder: Decoder): Date = Date(decoder.decodeLong())
+}
 
 @Serializable
-data class Message(
+data class Message @OptIn(ExperimentalSerializationApi::class) constructor(
     @BsonId
     @Serializable(with = ObjectIdSerializer::class)
     val sender: ObjectId,
@@ -17,5 +28,6 @@ data class Message(
     @Serializable(with = ObjectIdSerializer::class)
     val receiver: ObjectId,
     val message: String,
-    val timestamp: BsonTimestamp
+    @Serializable(with = DateLongSerializer::class)
+    val timestamp: Date
 )

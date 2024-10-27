@@ -1,6 +1,7 @@
 package roomme.serializables
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bson.codecs.kotlinx.ObjectIdSerializer
 import org.bson.codecs.pojo.annotations.BsonId
@@ -9,7 +10,7 @@ import org.bson.types.ObjectId
 @Suppress("ArrayInDataClass")
 @Serializable
 data class User @OptIn(ExperimentalSerializationApi::class) constructor(
-    @BsonId
+    @SerialName("_id")
     @Serializable(with = ObjectIdSerializer::class)
     val id: ObjectId?,
     val email: String,
@@ -29,8 +30,8 @@ data class User @OptIn(ExperimentalSerializationApi::class) constructor(
     val currentMatches: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Active matches
     val toMatchWith: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Users that liked this user, must be shown next to test
 
-    val liked: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Roomates that were liked
-    val disliked: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Disliked roomates
+    val liked: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Roommates that were liked
+    val disliked: Array<@Serializable(with = ObjectIdSerializer::class) ObjectId>, // Disliked roommates
 
     // Questions
     val gender: Boolean,

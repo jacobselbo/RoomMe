@@ -18,7 +18,7 @@ fun Route.routeSecurity(userService: UserDBService, hashingCost: Int, bCrypt: Ha
         post("/login") {
             // Create the cookie for the client
             call.principal<UserSession>()?.let {
-                call.sessions.set(UserSession(it.id))
+                call.sessions.set(it)
             }
 
             call.respondRedirect("/home")

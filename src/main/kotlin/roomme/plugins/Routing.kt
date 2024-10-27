@@ -10,6 +10,7 @@ import roomme.routes.api.routeUserAPI
 import roomme.routes.frontend.routeFrontEnd
 import roomme.routes.routeSecurity
 import roomme.services.UserDBService
+import java.io.File
 
 fun Application.configureRouting() {
     val hashingCost: Int = environment.config.property("mongodb.hashingCost").getString().toInt()
@@ -38,6 +39,6 @@ fun Application.configureRouting() {
         routeFrontEnd()
 
         // Static Content
-        staticResources("/resources/static", "resources/static")
+        staticFiles("/static", File("resources/static/"))
     }
 }
