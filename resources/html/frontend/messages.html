@@ -18,7 +18,7 @@
             }
         </style>
     </head>
-    <body class="h-screen font-extrabold">
+    <body class="h-screen">
         <div id="message-container"></div>
         <!-- home bar -->
         <div class="navbar p-0 bg-base-200 bottom-0 absolute">
@@ -106,14 +106,16 @@
                 topBar.classList.add("messages-top-bar");
                 newMessageContainer.append(topBar);
                 topBar.innerHTML = `
-<span style="display: inline">
-    <a style="width: 20vw" href="#" onclick="updateView({view:USER_LIST})">
-        <span class="back-button">Back</span>
+<div class="flex flex-row">
+    <a class="back-button" href="#" onclick="updateView({view:USER_LIST})">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+  <path fill-rule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+</svg>
     </a>
     <span class="current-user-messaged">
         ${otherUser.fullName}
     </span>
-</span>
+</div>
                 `;
 
                 const messageBoxEx = document.createElement("div");
@@ -143,11 +145,14 @@ ${message.message}
 
                 const messageTextbox = document.createElement("div");
                 messageTextbox.innerHTML = `
-<div style="display: flex">
-<textarea id="message-content" placeholder="Message..."
-class="textarea textarea-bordered textarea-lg mr-5"
-style="width: 60%; height: 15vh; resize: none; margin-left: 5%; display: inline"></textarea>
-<button class="send-message" onclick="onClickSendMessage()">Send</button>
+<div class="flex flex-row justify-between message-enter">
+<textarea id="message-content" placeholder="Enter Message"
+class="textarea textarea-bordered textarea-lg ml-5"
+style="width: 100%; resize: none; display: inline"></textarea>
+<button class="send-message mr-5" onclick="onClickSendMessage()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 m-6">
+  <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+</svg>
+</button>
 </div>
 `;
                 newMessageContainer.append(messageTextbox);
