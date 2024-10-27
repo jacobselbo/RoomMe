@@ -86,7 +86,7 @@ fun Application.configureSockets() {
                     return@webSocket
                 }
 
-                val user = userService.getUserFromSession(session)!!
+                val user = userService.findUserFromSession(session)!!
 
                 try {
                     MessageService.register(user.id!!, MessageHandler(

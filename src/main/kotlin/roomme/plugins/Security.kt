@@ -10,6 +10,7 @@ import io.ktor.util.*
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.*
 import roomme.Utilities
+import roomme.serializables.User
 import roomme.services.UserDBService
 
 @Serializable
@@ -39,7 +40,7 @@ fun Application.configureSecurity() {
             validate { credentials ->
                 if (!credentials.name.matches(Utilities.EMAIL_REGEX) ||
                     !credentials.password.matches(Utilities.PASSWORD_REGEX)) { null } else {
-                    val user = userService.users.find(Filters.eq("email", credentials.name)).firstOrNull()
+                    val user = userService.users.find(Filters.eq(User::email.name, credentials.name)).firstOrNull()
 
                     if (user == null) { null } else {
                         val hash = bCrypt.hash(hashingCost, user.salt, credentials.password.toByteArray())
@@ -56,7 +57,7 @@ fun Application.configureSecurity() {
         }
         session("auth-session") {
             validate { session ->
-                if (userService.getUserFromSession(session) != null)
+                if (userService.findUserFromSession(session) != null)
                     session
                 else null
             }

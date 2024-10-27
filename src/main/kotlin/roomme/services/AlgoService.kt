@@ -7,32 +7,25 @@ import roomme.algo.QuestionEntry
 import roomme.serializables.User
 
 class AlgoService private constructor(
-    private val lowerScale: Double,
-    private val upperScale: Double,
-    private val entryNumber: Int
+    val lowerScale: Double,
+    val upperScale: Double,
+    val entryNumber: Int
 ) {
     companion object {
-        private var instance: AlgoService? = null
+        var instance: AlgoService? = null
+            get() {
+                if (field == null) {
+                    error("AlgoService is not initialized.")
+                }
 
-        private fun getInstance(): AlgoService {
-            return instance as AlgoService
-        }
+                return field;
+
+            }
+            private set
 
         fun createInstance(lowerScale: Double, upperScale: Double, entryNumber: Int): AlgoService {
             instance = AlgoService(lowerScale, upperScale, entryNumber)
             return instance as AlgoService
-        }
-
-        fun getLowerScale(): Double {
-            return getInstance().lowerScale
-        }
-
-        fun getUpperScale(): Double {
-            return getInstance().upperScale
-        }
-
-        fun getEntryNumber(): Int {
-            return getInstance().entryNumber
         }
     }
 
@@ -59,9 +52,9 @@ class AlgoService private constructor(
 
     suspend fun next(user: User): User {
         if (user.toMatchWith.isNotEmpty()) {
-            val id = user.toMatchWith[0]
+            val objectId = user.toMatchWith[0]
 
-            return userDBService.users.find(Filters.eq("_id", id)).first()
+            return userDBService.users.find(Filters.eq("_id", objectId)).first()
         }
 
         val usersSwipedOn: ArrayList<ObjectId> = ArrayList()

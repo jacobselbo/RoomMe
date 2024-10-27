@@ -13,9 +13,7 @@ import roomme.plugins.UserSession
 import roomme.serializables.User
 import roomme.services.UserDBService
 
-fun Route.routeSecurity(hashingCost: Int, bCrypt: Hasher) {
-    val userService = UserDBService.instance!!
-
+fun Route.routeSecurity(userService: UserDBService, hashingCost: Int, bCrypt: Hasher) {
     authenticate("auth-form") {
         post("/login") {
             // Create the cookie for the client

@@ -11,15 +11,17 @@ class QuestionEntry(
     private val attract: Boolean,
     vector: Array<Int>
 ) {
-    private var vector: Array<Double> = Array(AlgoService.getEntryNumber()) {
-        (vector[it] - AlgoService.getLowerScale()) / (AlgoService.getUpperScale() - AlgoService.getLowerScale())
-    }
+    private val algoService = AlgoService.instance!!
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
+    private var vector: Array<Double> = Array(algoService.entryNumber) {
+        (vector[it] - algoService.lowerScale) / (algoService.upperScale - algoService.lowerScale)
+    }
+
     init {
-        if (vector.size != AlgoService.getEntryNumber())
+        if (vector.size != algoService.entryNumber)
             logger.error("Vector size should be %d, but was %d".format(
-                AlgoService.getEntryNumber(), vector.size
+                algoService.entryNumber, vector.size
             ))
     }
 

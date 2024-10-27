@@ -23,7 +23,7 @@ fun Application.configureRouting() {
             if (session == null) {
                 call.respondRedirect("/login")
             } else {
-                val user = userService.getUserFromSession(session)!!
+                val user = userService.findUserFromSession(session)!!
 
                 if (user.questionsAnswered) {
                     call.respondRedirect("/home")
@@ -33,8 +33,8 @@ fun Application.configureRouting() {
             }
         }
 
-        routeSecurity(hashingCost, bCrypt)
-        routeUserAPI()
+        routeSecurity(userService, hashingCost, bCrypt)
+        routeUserAPI(userService)
         routeFrontEnd()
 
         // Static Content
