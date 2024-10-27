@@ -1,6 +1,6 @@
 ktor:
   deployment:
-    port: 8080
+    port: 7449
     host: 0.0.0.0
   application:
     modules:
