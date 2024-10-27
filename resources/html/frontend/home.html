@@ -16,7 +16,7 @@
             #card {
                 width: 90%;
                 animation: enter 0.8s ease-in-out;
-                margin-top: 20%;
+                margin-top: 10%;
             }
 
             #home {
@@ -87,7 +87,8 @@
                     <div>
                         <div id="age" class="badge badge-outline mr-5" style="font-size: 2rem;line-height: 2.5rem;height: 2.5rem">...</div>
                         <div id="major" class="badge badge-outline mr-5" style="font-size: 2rem;line-height: 2.5rem;height: 2.5rem">...</div>
-                        <div id="hometown" class="badge badge-outline" style="font-size: 2rem;line-height: 2.5rem;height: 2.5rem">...</div>
+                        <div id="hometown" class="badge badge-outline mr-5" style="font-size: 2rem;line-height: 2.5rem;height: 2.5rem">...</div>
+                        <div id="gender" class="badge badge-outline" style="font-size: 2rem;line-height: 2.5rem;height: 2.5rem">...</div>
                     </div>
                     <p id="bio" style="font-size:3rem"></p>
                 </div>
@@ -134,6 +135,7 @@
                     document.getElementById("age").textContent = data.age
                     document.getElementById("major").textContent = data.major
                     document.getElementById("hometown").textContent = data.hometown
+                    document.getElementById("gender").textContent = data.gender ? "Male" : "Female"
 
                     //document.getElementById("cardImage").src = data.images[0]
                     document.getElementById("cardImage").src = "https://random.imagecdn.app/768/1024"
@@ -145,6 +147,7 @@
                     document.getElementById("age").textContent = "184"
                     document.getElementById("major").textContent = "Error Handling"
                     document.getElementById("hometown").textContent = "Exception City"
+                    document.getElementById("gender").textContent = "Exception"
 
                     document.getElementById("cardImage").src = "https://random.imagecdn.app/768/1024"
                 });

@@ -53,6 +53,7 @@ data class PublicUser(
     val age: Int,
     val major: String,
     val hometown: String,
+    val gender: Boolean,
     val images: Array<String>
 ) {
     companion object {
@@ -64,6 +65,7 @@ data class PublicUser(
                 age = user.age,
                 major = user.major,
                 hometown = user.hometown,
+                gender = user.gender,
                 images = user.images
             )
         }
