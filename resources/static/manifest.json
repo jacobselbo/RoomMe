@@ -1,7 +1,7 @@
 {
   "name": "RoomMe",
   "short_name": "RM",
-  "start_url": "/165.227.113.233:7449",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
