@@ -37,46 +37,6 @@ fun Application.configureSockets() {
     logger.info("HELLO BITCHO!")
 
     routing {
-
-        webSocket("/api/testmsg") {
-            logger.info("HELLO BITCH!")
-            val firstFrame = incoming.receive()
-            val name = (firstFrame as Frame.Text).readText()
-
-            val id1: ObjectId
-            val id2: ObjectId
-            if (name == "User1") {
-                id1 = ObjectId("671d659f9d14ac05cf9e4eff")
-                id2 = ObjectId("671d6aa20c5d166618535a5a")
-            } else {
-                id1 = ObjectId("671d6aa20c5d166618535a5a")
-                id2 = ObjectId("671d659f9d14ac05cf9e4eff")
-            }
-
-            val user = UserDBService.instance!!.users.find(Filters.eq("_id", id1)).firstOrNull()!!
-
-            try {
-                MessageService.register(id1, MessageHandler(
-                    id1,
-                    this
-                ))
-                incoming.consumeEach { frame ->
-                    if(frame is Frame.Text) {
-                        val txt = frame.readText()
-                        MessageService.sendMessage(
-                            id1,
-                            id2,
-                            txt
-                        )
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                MessageService.close(user.id!!)
-            }
-        }
-
         authenticate("auth-session") {
             webSocket("/api/messages") {
                 val session = call.sessions.get<UserSession>()

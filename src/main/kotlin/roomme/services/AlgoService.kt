@@ -57,12 +57,12 @@ class AlgoService private constructor(
             return userDBService.users.find(Filters.eq("_id", objectId)).first()
         }
 
-        val usersSwipedOn: ArrayList<ObjectId> = ArrayList()
+        val usersSwipedOn = mutableListOf<ObjectId>()
 
         usersSwipedOn.addAll(user.liked)
         usersSwipedOn.addAll(user.disliked)
 
-        val users: ArrayList<User> = ArrayList()
+        val users = mutableListOf<User>()
 
         userDBService.users.find(Filters.nin("_id", usersSwipedOn)).collect {
             u -> users.add(u)

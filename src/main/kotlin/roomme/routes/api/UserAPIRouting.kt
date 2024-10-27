@@ -1,8 +1,10 @@
 package roomme.routes.api
 
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.Updates
 import io.ktor.http.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -42,6 +44,13 @@ fun Route.routeUserAPI(userService: UserDBService) {
 
     authenticate("auth-session") {
         route("/api/user/") {
+            get("self") {
+                val session = call.sessions.get<UserSession>()!!
+                val user = userService.findUserFromSession(session)!!
+
+                call.respondText(Json.encodeToString(PublicUser.createPublicUser(user)))
+            }
+
             get("{userId}") {
                 val userId: String = call.parameters["userId"]!!
                 val user = userDBService.users

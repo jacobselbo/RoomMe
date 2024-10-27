@@ -12,7 +12,7 @@ data class MessageHandler(
 )
 
 class MessageService {
-    private val handlers: HashMap<ObjectId, MessageHandler> = HashMap()
+    private val handlers = hashMapOf<ObjectId, MessageHandler>()
 
     companion object {
         var instance: MessageService? = null
