@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const sock = new WebSocket("ws://localhost:8080/api/testmsg");
+
+        function connect() {
+            sock.send(
+                document.getElementById("user1").checked ?
+                    "User1" : "User2"
+            )
+        }
+
+        function sendMessage() {
+            const msg = document.getElementById("message").value
+            sock.send(msg)
+            document.getElementById("chat").value += 'Me: ' + msg + '\n'
+            return false
+        }
+
+        sock.addEventListener("message", (event) => {
+            const dat = JSON.parse(event.data)
+            document.getElementById("chat").value += dat['id'] + ': ' + dat['message'] + '\n'
+        })
+    </script>
+
+    <label for="chat">Chat area</label>
+    <textarea name="chat" id="chat" cols="30" rows="10" class="chat" readonly></textarea>
+
+    <form>
+        <input type="radio" id="user1" name="userq" value="User1" checked>
+        <label for="user1">User 1</label><br>
+        <input type="radio" id="user2" name="userq" value="User2">
+        <label for="user2">User 2</label><br>
+        <button type="button" onclick="connect()">Connect</button>
+    </form>
+
+    <form onsubmit="return sendMessage()">
+        <label for="message">Message</label>
+        <input type="text" name="message" id="message"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

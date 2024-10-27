@@ -11,6 +11,7 @@ fun Application.configureSingletons() {
     val mongoService = MongoService.createInstance(mongoUsername, mongoPassword)
     UserDBService.createInstance(mongoService)
     MessageDBService.createInstance(mongoService)
+    MessageService.createInstance()
 
     // Set up Message Event Handler
     //MessageService.createInstance()

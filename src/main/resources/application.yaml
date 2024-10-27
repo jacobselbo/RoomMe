@@ -8,7 +8,7 @@ ktor:
       - roomme.plugins.SingletonsKt.configureSingletons
       - roomme.plugins.SecurityKt.configureSecurity
       - roomme.plugins.RoutingKt.configureRouting
-#      - roomme.plugins.SocketsKt.configureSockets
+      - roomme.plugins.SocketsKt.configureSockets
 
 mongodb:
   username: selboajacob

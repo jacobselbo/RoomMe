@@ -27,6 +27,10 @@ fun Route.routeSecurity(hashingCost: Int, bCrypt: Hasher) {
         }
     }
 
+    get("/fakechat") {
+        call.respondFile(getHTMLFile("fakechat.html"))
+    }
+
     get("/login") {
         call.respondFile(getHTMLFile("security/login.html"))
     }
