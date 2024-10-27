@@ -13,6 +13,28 @@ data class MessageHandler(
 
 class MessageService {
     private val handlers = hashMapOf<ObjectId, MessageHandler>()
+    private val messageDBService = MessageDBService.instance!!
+
+    suspend fun register(id: ObjectId, handler: MessageHandler) {
+        if (id in instance!!.handlers)
+            close(id)
+        instance!!.handlers[id] = handler
+    }
+
+    suspend fun sendMessage(sender: ObjectId, receiver: ObjectId, message: String) {
+        val timestamp = System.currentTimeMillis()
+        val msg = SockMessage(sender.toString(), message, timestamp)
+        instance!!.handlers[receiver]?.sock?.send(
+            Frame.Text(Json.encodeToString(msg))
+        )
+        messageDBService.messageSent(sender, receiver, message, timestamp)
+    }
+
+    suspend fun close(id: ObjectId) {
+        instance!!.handlers[id]?.sock?.close()
+        if (id in instance!!.handlers)
+            instance!!.handlers.remove(id)
+    }
 
     companion object {
         var instance: MessageService? = null
@@ -28,27 +50,6 @@ class MessageService {
         fun createInstance(): MessageService {
             instance = MessageService()
             return instance as MessageService
-        }
-
-        suspend fun register(id: ObjectId, handler: MessageHandler) {
-            if (id in instance!!.handlers)
-                close(id)
-            instance!!.handlers[id] = handler
-        }
-
-        suspend fun sendMessage(sender: ObjectId, receiver: ObjectId, message: String) {
-            val timestamp = System.currentTimeMillis()
-            val msg = SockMessage(sender.toString(), message, timestamp)
-            instance!!.handlers[receiver]?.sock?.send(
-                Frame.Text(Json.encodeToString(msg))
-            )
-            MessageDBService.messageSent(sender, receiver, message, timestamp)
-        }
-
-        suspend fun close(id: ObjectId) {
-            instance!!.handlers[id]?.sock?.close()
-            if (id in instance!!.handlers)
-                instance!!.handlers.remove(id)
         }
     }
 }

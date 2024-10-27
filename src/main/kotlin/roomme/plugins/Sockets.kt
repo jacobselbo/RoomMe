@@ -33,6 +33,7 @@ fun Application.configureSockets() {
     }
 
     val userService = UserDBService.instance!!
+    val messageService = MessageService.instance!!
 
     routing {
         authenticate("auth-session") {
@@ -47,7 +48,7 @@ fun Application.configureSockets() {
                 val user = userService.findUserFromSession(session)!!
 
                 try {
-                    MessageService.register(user.id!!, MessageHandler(
+                    messageService.register(user.id!!, MessageHandler(
                         user.id,
                         this
                     ))
@@ -55,7 +56,7 @@ fun Application.configureSockets() {
                         if(frame is Frame.Text) {
                             val txt = frame.readText()
                             val msg: InMessage = Json.decodeFromString(txt)
-                            MessageService.sendMessage(
+                            messageService.sendMessage(
                                 user.id,
                                 ObjectId(msg.id),
                                 msg.message
@@ -65,7 +66,7 @@ fun Application.configureSockets() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
-                    MessageService.close(user.id!!)
+                    messageService.close(user.id!!)
                 }
             }
         }

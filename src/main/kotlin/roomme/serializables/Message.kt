@@ -2,6 +2,7 @@ package roomme.serializables
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -21,10 +22,10 @@ object DateLongSerializer : KSerializer<Date> {
 
 @Serializable
 data class Message @OptIn(ExperimentalSerializationApi::class) constructor(
-    @BsonId
+    @SerialName("sender")
     @Serializable(with = ObjectIdSerializer::class)
     val sender: ObjectId,
-    @BsonId
+    @SerialName("receiver")
     @Serializable(with = ObjectIdSerializer::class)
     val receiver: ObjectId,
     val message: String,
