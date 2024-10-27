@@ -46,6 +46,10 @@
     height: 70%
 }
 
+img {
+    user-select: none;
+}
+
 body {
     overflow: hidden;
 }

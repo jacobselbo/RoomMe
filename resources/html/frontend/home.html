@@ -15,6 +15,8 @@
         <style>
             #card {
                 width: 90%;
+                animation: enter 0.8s ease-in-out;
+                margin-top: 20%;
             }
 
             #home {
@@ -42,10 +44,38 @@
                 width: 10rem;
                 height: 10rem;
             }
+
+            @keyframes exit-left {
+                0% {
+                    transform: none;
+                }
+                100% {
+                    transform: translateX(-150vw) rotateZ(30deg);
+                }
+            }
+
+            @keyframes exit-right {
+                0% {
+                    transform: none;
+                }
+                100% {
+                    transform: translateX(150vw) rotateZ(-30deg);
+                }
+            }
+
+            @keyframes enter {
+                0% {
+                    transform: translateY(-150vh) rotateZ(-15deg) rotateX(30deg);
+                }
+
+                100% {
+                    transform: none;
+                }
+            }
         </style>
     </head>
     <body class="h-screen">
-        <div class="flex flex-col justify-center" style="height: 100%">
+        <div class="flex flex-col justify-between" style="height: 100%">
             <div id="card" class="card ml-auto mr-auto bg-base-100 shadow-xl">
                 <figure>
                     <img id="cardImage" src="https://image-placeholder.com/images/actual-size/768x1024.png" alt="User picture" />
@@ -62,7 +92,7 @@
                     <p id="bio" style="font-size:3rem"></p>
                 </div>
             </div>
-            <div class="flex flex-row justify-between" style="margin-left:15%;margin-right: 15%;margin-top:10%">
+            <div class="flex flex-row justify-between" style="margin-left:15%;margin-right: 15%;margin-top:10%;margin-bottom:20%">
                 <button id="dislike" onclick="dislikeClicked()" class="flex justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" class="size-6 m-auto" style="width:60%">
                         <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -107,18 +137,41 @@
 
                     //document.getElementById("cardImage").src = data.images[0]
                     document.getElementById("cardImage").src = "https://random.imagecdn.app/768/1024"
-                })
+                }).catch(() => {
+                    shownUserId = -1;
+
+                    document.getElementById("fullName").textContent = "Oopsie!"
+                    document.getElementById("bio").textContent = "We weren't able to fetch any more users!"
+                    document.getElementById("age").textContent = "184"
+                    document.getElementById("major").textContent = "Error Handling"
+                    document.getElementById("hometown").textContent = "Exception City"
+
+                    document.getElementById("cardImage").src = "https://random.imagecdn.app/768/1024"
+                });
+            }
+
+            function exitEnter(exit) {
+                const card = document.getElementById("card");
+                card.style.animation = `${exit} 0.5s ease-in-out`;
+                card.offsetHeight;
+                card.addEventListener("animationend", () => {
+                    displayNewUser();
+                    card.style.animation = 'enter 0.5s ease-in-out';
+                    card.offsetHeight;
+                }, { once: true });
             }
 
             function dislikeClicked() {
+                if (shownUserId === -1) return;
                 fetch("/api/user/dislike/" + shownUserId).then(response => {
-                    displayNewUser()
+                    exitEnter('exit-left')
                 })
             }
 
             function likeClicked() {
+                if (shownUserId === -1) return;
                 fetch("/api/user/like/" + shownUserId, ).then(response => {
-                    displayNewUser()
+                    exitEnter('exit-right')
                 })
             }
 
