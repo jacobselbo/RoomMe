@@ -1,17 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Register</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
     </head>
     <body>
-        <form method="POST" action="/register">
-            <input type="text" placeholder="Full Name" name="fullname" />
-            <input type="email" placeholder="Email" name="email" />
-            <input type="password" placeholder="Password" name="password" />
-            <input type="password" placeholder="Confirm Password" name="confirmPassword" />
-            <button type="submit">Register</button>
-        </form>
+        <div id="SignUp" class="screen text-center" data-theme="light">
+            <form method="POST" action="/register">
+                <div class ="my-20">
+                    <h1 class = "text-3xl font-extrabold dark:text-white">Create your account</h1>
+                </div>
+                <div class="my-8">
+                    <input name="fullname" type="text" placeholder="Full Name" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="my-8">
+                    <input name="email" type="email" placeholder="Email" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="my-8">
+                    <input name="password" type="password" placeholder="Password" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="my-8">
+                    <input name="confirmPassword" type="password" placeholder="Confirm Password" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="mt-16">
+                    <button type="submit" class="btn btn-outline btn-success">Next</button>
+                </div>
+            </form>
+            <div class="my-6">
+                <a href="/login" class="btn btn-outline btn-success">Already have an account?</a>
+            </div>
+        </div>
     </body>
 </html>
