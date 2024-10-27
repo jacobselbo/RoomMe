@@ -12,20 +12,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import roomme.plugins.UserSession
+import roomme.serializables.PublicUser
 import roomme.services.AlgoService
 import roomme.services.UserDBService
-
-@Suppress("ArrayInDataClass")
-@Serializable
-data class PublicUser(
-    val id: String,
-    val fullName: String,
-    val bio: String,
-    val age: Int,
-    val major: String,
-    val hometown: String,
-    val images: Array<String>
-)
 
 fun Route.routeUserAPI(userService: UserDBService) {
     val algoService = AlgoService.instance!!
@@ -37,16 +26,8 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 val userId: String = call.parameters["userId"]!!
                 val user = userDBService.users
                     .find(Filters.eq("_id", userId)).firstOrNull()!!
-                val publicUser = PublicUser(
-                    id = userId,
-                    fullName = user.fullName,
-                    bio = user.bio,
-                    age = user.age,
-                    major = user.major,
-                    hometown = user.hometown,
-                    images = user.images
-                )
-                call.respondText(Json.encodeToString(publicUser))
+
+                call.respondText(Json.encodeToString(PublicUser.createPublicUser(user)))
             }
 
             get("next") {
@@ -54,7 +35,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 val user = userService.findUserFromSession(session)!!
                 val nextShown = algoService.next(user)
 
-                call.respondText(Json.encodeToString(nextShown))
+                call.respondText(Json.encodeToString(PublicUser.createPublicUser(nextShown)))
             }
 
             post("like/{otherId}") {
@@ -69,11 +50,32 @@ fun Route.routeUserAPI(userService: UserDBService) {
                     return@post
                 }
 
+                val success = userService.likeUser(user, otherUser)
 
+                if (success)
+                    call.respond(HttpStatusCode.OK)
+                else
+                    call.respond(HttpStatusCode.InternalServerError)
             }
 
             post("dislike/{otherId}") {
+                val session = call.sessions.get<UserSession>()!!
+                val user = userService.findUserFromSession(session)!!
 
+                val userId = call.parameters["otherId"]!!
+                val otherUser = userService.findUserFromId(userId)
+
+                if (otherUser == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@post
+                }
+
+                val success = userService.dislikeUser(user, otherUser)
+
+                if (success)
+                    call.respond(HttpStatusCode.OK)
+                else
+                    call.respond(HttpStatusCode.InternalServerError)
             }
         }
     }

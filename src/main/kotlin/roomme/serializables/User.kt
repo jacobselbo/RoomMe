@@ -6,6 +6,7 @@ import org.bson.codecs.kotlinx.ObjectIdSerializer
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
+@Suppress("ArrayInDataClass")
 @Serializable
 data class User @OptIn(ExperimentalSerializationApi::class) constructor(
     @BsonId
