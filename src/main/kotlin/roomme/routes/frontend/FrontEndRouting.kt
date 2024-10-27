@@ -14,5 +14,9 @@ fun Routing.routeFrontEnd() {
         get("/home") {
             call.respondFile(getHTMLFile("frontend/home.html"))
         }
+
+        get("/questions") {
+            call.respondFile(getHTMLFile("frontend/questions.html"))
+        }
     }
 }

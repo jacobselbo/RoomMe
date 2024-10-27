@@ -18,6 +18,8 @@ import roomme.serializables.User
 import roomme.services.AlgoService
 import roomme.services.MessageDBService
 import roomme.services.UserDBService
+import java.lang.Boolean.parseBoolean
+import java.lang.Integer.parseInt
 
 fun Route.routeUserAPI(userService: UserDBService) {
     val WHITELIST_USER_FIELDS = setOf(
@@ -34,7 +36,6 @@ fun Route.routeUserAPI(userService: UserDBService) {
         User::qSocial.name,
         User::qAloneTime.name,
         User::qTemperature.name,
-        User::qAttractedTo.name,
         User::qOtherGenders.name
     )
 
@@ -67,7 +68,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 call.respondText(Json.encodeToString(PublicUser.createPublicUser(nextShown)))
             }
 
-            post("like/{otherId}") {
+            get("like/{otherId}") {
                 val session = call.sessions.get<UserSession>()!!
                 val user = userService.findUserFromSession(session)!!
 
@@ -76,7 +77,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
 
                 if (otherUser == null) {
                     call.respond(HttpStatusCode.BadRequest)
-                    return@post
+                    return@get
                 }
 
                 val success = userService.likeUser(user, otherUser)
@@ -87,7 +88,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
                     call.respond(HttpStatusCode.InternalServerError)
             }
 
-            post("dislike/{otherId}") {
+            get("dislike/{otherId}") {
                 val session = call.sessions.get<UserSession>()!!
                 val user = userService.findUserFromSession(session)!!
 
@@ -96,7 +97,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
 
                 if (otherUser == null) {
                     call.respond(HttpStatusCode.BadRequest)
-                    return@post
+                    return@get
                 }
 
                 val success = userService.dislikeUser(user, otherUser)
@@ -125,10 +126,17 @@ fun Route.routeUserAPI(userService: UserDBService) {
                     if (key !in WHITELIST_USER_FIELDS)
                         continue
                     // TODO: Remember this can be XSS, and we really need to sanitize input
-                    updates.add(Updates.set(key, value))
+
+                    val setValue: Any = when (key) {
+                        User::age.name, User::qSmokeVape.name, User::qDrink.name, User::qSleepSchedule.name, User::qSocial.name, User::qAloneTime.name, User::qTemperature.name -> parseInt(value)
+                        User::qOtherGenders.name, User::gender.name -> parseBoolean(value)
+                        else -> value
+                    }
+
+                    updates.add(Updates.set(key, setValue))
                 }
 
-                val result = userDBService.users.updateOne(
+                val result = userDBService.users.updateMany(
                     Filters.eq("_id", user.id),
                     Updates.combine(updates)
                 )

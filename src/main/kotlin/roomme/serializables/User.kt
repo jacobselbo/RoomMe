@@ -42,6 +42,5 @@ data class User @OptIn(ExperimentalSerializationApi::class) constructor(
     val qSocial: Int,
     val qAloneTime: Int,
     val qTemperature: Int,
-    val qAttractedTo: Boolean, // Required Match
     val qOtherGenders: Boolean // Require Match
 )

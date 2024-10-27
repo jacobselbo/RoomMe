@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html data-theme="light">
+    <head>
+        <title>Multi-Question Form</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    </head>
+    <body style="overflow: hidden;">
+    <div id="question-container" class = "screen"  style="height: 100vh">
+        <div id="question1" class="screen text-center align-center" style ="margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 1/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">Please enter a quick bio about yourself</p>
+            <textarea id="answer1" placeholder="Bio: " class="textarea textarea-bordered textarea-lg h-64" style="width: 80%;"></textarea>
+
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(1)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question2" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 2/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">What is your major?</p>
+            <input id="answer2" type="text" placeholder="Type here" class="input input-lg w-full max-w-xs" style="font-size: 36px"/>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(2)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question3" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 3/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">What is your hometown?</p>
+            <input id="answer3" type="text" placeholder="Type here" class="input input-lg w-full max-w-xs" style="font-size: 36px"/>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(3)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question4" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 4/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">What is your gender?</p>
+            <select id="answer4" class="select select-bordered w-full max-w-xs" style="font-size: 20px">
+                <option disabled selected>Select Below</option>
+                <option value="true">Male</option>
+                <option value="false">Female</option>
+            </select>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(4)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question5" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 5/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">How comfortable are you with smoking/vaping?</p>
+            <div style="margin: 0 10%">
+                <input id="answer5" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I cannot stand it</div>
+                <div style="font-size: 24px">I am fine with it</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(5)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question6" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 6/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">How comfortable are you with drinking?</p>
+            <div style="margin: 0 10%">
+                <input id="answer6" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I cannot stand it</div>
+                <div style="font-size: 24px">I am fine with it</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(6)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question7" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 7/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">Do you prefer to sleep early?</p>
+            <div style="margin: 0 10%">
+                <input id="answer7" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I sleep very late</div>
+                <div style="font-size: 24px">I sleep very early</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(7)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question8" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 8/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">How social are you?</p>
+            <div style="margin: 0 10%">
+                <input id="answer8" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I am not social</div>
+                <div style="font-size: 24px">I am very social</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(8)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question9" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 9/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">How much alone time do you want?</p>
+            <div style="margin: 0 10%">
+                <input id="answer9" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I dislike being alone</div>
+                <div style="font-size: 24px">I frequently prefer being alone</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(9)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question10" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 10/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">I prefer rooming with: </p>
+            <select id="answer10" class="select select-bordered w-full max-w-xs" style="font-size: 20px">
+                <option disabled selected>Select Below</option>
+                <option value="true">Male</option>
+                <option value="false">Female</option>
+            </select>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(10)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question11" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 11/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">What temperature do you like the room to be?</p>
+            <div style="margin: 0 10%">
+                <input id="answer11" type="range" min="1" max="10" value="5" class="range" step="1" />
+            </div>
+            <div class="flex justify-between text-xs" style="margin: 0 11%">
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">1</div>
+                <div style="font-size: 24px">10</div>
+            </div>
+            <div class="flex justify-between" style="margin-left: 101px; margin-right: 97px">
+                <div style="font-size: 24px">I like it cold(60°f)</div>
+                <div style="font-size: 24px">I like it hot(90°f)</div>
+            </div>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(11)" style="margin: auto">Submit</button>
+            </div>
+        </div>
+
+        <div id="question12" class="screen text-center" style ="display: none; margin-top: 600px;">
+            <h2 class = "text-7xl font-extrabold dark:text-white pb-12">Question 12/12</h2>
+            <p class ="text-5xl font-bold dark:text-white pb-16">What is your age?</p>
+            <input id="answer12" type="text" placeholder="Type here" class="input input-lg w-full max-w-xs" style="font-size: 36px"/>
+            <div class="my-28"style="width: 100%; align-items: center; display: flex">
+                <button class="btn btn-lg btn-outline btn-success" onclick="submitAnswer(12)" style="margin: auto">Finish!</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let indexToField = ["bio","major","hometown","gender","qSmokeVape","qDrink","qSleepSchedule","qSocial","qAloneTime","qOtherGenders","qTemperature","age"]
+        let map = {}
+
+        function submitAnswer(questionNumber) {
+            map[indexToField[questionNumber - 1]] = document.getElementById("answer" + questionNumber).value
+
+            // Hide the current question and show the next one
+            document.getElementById("question" + questionNumber).style.display = "none";
+
+            if (questionNumber < 12) {
+                document.getElementById("question" + (questionNumber + 1)).style.display = "block";
+            } else {
+                map["questionsAnswered"] = "true"
+
+                fetch("/api/user/update", {
+                    method: "POST",
+                    body: JSON.stringify(map),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => {
+                    console.log(response.status)
+                    window.location.href = "/home"
+                })
+            }
+        }
+    </script>
+    </body>
+</html>

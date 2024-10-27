@@ -8,7 +8,7 @@ import kotlin.math.sqrt
 
 class QuestionEntry(
     private val gender: Boolean,
-    private val attract: Boolean,
+    private val genderWantsToRoomWith: Boolean,
     vector: Array<Int>
 ) {
     private val algoService = AlgoService.instance!!
@@ -26,7 +26,7 @@ class QuestionEntry(
     }
 
     fun matchScore(other: QuestionEntry): Double {
-        if (other.gender == attract || gender == other.attract)
+        if (gender != other.genderWantsToRoomWith || genderWantsToRoomWith != other.gender)
             return 0.0
 
         var dot = 0.0

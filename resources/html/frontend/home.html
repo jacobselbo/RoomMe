@@ -112,7 +112,7 @@
             }
 
             function likeClicked() {
-                fetch("/api/user/like/" + shownUserId).then(response => {
+                fetch("/api/user/like/" + shownUserId, ).then(response => {
                     displayNewUser()
                 })
             }

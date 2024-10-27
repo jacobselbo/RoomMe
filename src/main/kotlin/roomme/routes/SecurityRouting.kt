@@ -76,7 +76,6 @@ fun Route.routeSecurity(userService: UserDBService, hashingCost: Int, bCrypt: Ha
                 qSocial = -1,
                 qAloneTime = -1,
                 qTemperature = -1,
-                qAttractedTo = false,
                 qOtherGenders = false
             )
         )
@@ -84,7 +83,7 @@ fun Route.routeSecurity(userService: UserDBService, hashingCost: Int, bCrypt: Ha
         if (result.insertedId != null) {
             // Create cookie
             call.sessions.set(UserSession(result.insertedId!!.asObjectId().value.toString()))
-            call.respondRedirect("/home")
+            call.respondRedirect("/questions")
         } else {
             call.respond(HttpStatusCode.InternalServerError)
         }

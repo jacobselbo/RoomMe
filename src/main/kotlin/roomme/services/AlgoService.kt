@@ -34,7 +34,7 @@ class AlgoService private constructor(
     private fun createQuestionEntry(user: User): QuestionEntry {
         return QuestionEntry(
             user.gender,
-            user.qAttractedTo,
+            user.qOtherGenders,
             arrayOf(
                 user.qDrink,
                 user.qSocial,
