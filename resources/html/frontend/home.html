@@ -11,49 +11,67 @@
 
         <link href="/static/css/theme.css" rel="stylesheet">
         <style>
+            #card {
+                width: 90%;
+            }
+
             #home {
                 background-color: oklch(var(--b3));
+            }
+
+            #dislike {
+                background-color:#fff;
+                border:2px solid red;
+                border-radius:50%;
+                -moz-border-radius:50%;
+                -webkit-border-radius:50%;
+
+                width: 10rem;
+                height: 10rem;
+            }
+
+            #like {
+                background-color:#fff;
+                border:2px solid green;
+                border-radius:50%;
+                -moz-border-radius:50%;
+                -webkit-border-radius:50%;
+
+                width: 10rem;
+                height: 10rem;
             }
         </style>
     </head>
     <body class="h-screen">
-        <div>
-            <div class="card bg-base-100 image-full w-96 shadow-xl">
+        <div class="flex flex-col justify-center" style="height: 100%">
+            <div id="card" class="card ml-auto mr-auto bg-base-100 shadow-xl">
                 <figure>
-                    <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"/>
+                    <img id="cardImage" src="https://image-placeholder.com/images/actual-size/768x1024.png" alt="User picture" />
                 </figure>
                 <div class="card-body">
-                    <h2 class="card-title">Jacob Selbo!</h2>
-                    <p>If a dog chews shoes whose shoes does he choose?</p>
-                    <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
+                    <h2 id="fullName" class="card-title" style="font-size: 4rem;line-height: 4.5rem;">
+                        ...
+                    </h2>
+                    <div>
+                        <div id="age" class="badge badge-outline" style="font-size: 2rem;line-height: 2.5rem">...</div>
+                        <div id="major" class="badge badge-outline" style="font-size: 2rem;line-height: 2.5rem">...</div>
+                        <div id="hometown" class="badge badge-outline" style="font-size: 2rem;line-height: 2.5rem">...</div>
                     </div>
+                    <p id="bio" class="text-xl"></p>
                 </div>
             </div>
-
-            <!--
-            <img class="h-screen w-full object-cover rounded-md" src="https://image-placeholder.com/images/actual-size/768x1024.png">
-            <div class="w-full text-white absolute top-2/3 left-0 text-center">
-                <div class="test-left relative z-10 p-4">
-                    <div id="name" class="text-lg font-bold ">John Doe</div>
-                    <div id="age" class="text-sm ">69</div>
-                </div>
-                <div class="text-right">
-                    <div class="text-left mx-3">
-                        <div class="">Bio: I like men</div>
-                        <div class="mt-2">Major: Gender studies </div>
-                        <div class="mt-2">Year: Super senior </div>
-                    </div>
-                </div>
-            </div>-->
-        </div>
-        <div class="absolute inset-x-0 bottom-0 h-60 bg-gradient-to-t from-black from-40% to-black/50">
-            <button onclick="onNo()" id="noButton" class="transition ease-in-out delay-150 absolute bottom-2 left-2 bg-red-500 hover:bg-red-500 text-white font-bold py-10 px-10 rounded-md ">
-                No
-            </button>
-            <button onclick="onYes()" id="yesButton" class="absolute bottom-2 right-2 bg-green-500 hover:bg-green-500 text-white font-bold py-10 px-10 rounded-md ">
-                Yes
-            </button>
+            <div class="flex flex-row justify-between" style="margin-left:15%;margin-right: 15%;margin-top:10%">
+                <button id="dislike" onclick="dislikeClicked()" class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" class="size-6" style="width:60%">
+                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button id="like" onclick="likeClicked()" class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" class="size-6" style="width:60%">
+                        <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- home bar -->
@@ -65,11 +83,41 @@
                 </svg>
             </a>
             <a id="messages" href="/messages" class="flex-1 justify-center h-full btn">
-                <svg class="h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <svg class="h-f ull" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 0 0-1.032-.211 50.89 50.89 0 0 0-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 0 0 2.433 3.984L7.28 21.53A.75.75 0 0 1 6 21v-4.03a48.527 48.527 0 0 1-1.087-.128C2.905 16.58 1.5 14.833 1.5 12.862V6.638c0-1.97 1.405-3.718 3.413-3.979Z" />
                     <path d="M15.75 7.5c-1.376 0-2.739.057-4.086.169C10.124 7.797 9 9.103 9 10.609v4.285c0 1.507 1.128 2.814 2.67 2.94 1.243.102 2.5.157 3.768.165l2.782 2.781a.75.75 0 0 0 1.28-.53v-2.39l.33-.026c1.542-.125 2.67-1.433 2.67-2.94v-4.286c0-1.505-1.125-2.811-2.664-2.94A49.392 49.392 0 0 0 15.75 7.5Z" />
                 </svg>
             </a>
         </div>
+
+        <script>
+            let shownUserId = ""
+
+            function displayNewUser() {
+                fetch("api/user/next").then(response => response.json()).then((data) => {
+                    shownUserId = data.id
+
+                    document.getElementById("fullName").textContent = data.fullName
+                    document.getElementById("bio").textContent = data.bio
+                    document.getElementById("age").textContent = data.age
+                    document.getElementById("major").textContent = data.major
+                    document.getElementById("hometown").textContent = data.hometown
+                })
+            }
+
+            function dislikeClicked() {
+                fetch("/api/user/dislike/" + shownUserId).then(response => {
+                    displayNewUser()
+                })
+            }
+
+            function likeClicked() {
+                fetch("/api/user/like/" + shownUserId).then(response => {
+                    displayNewUser()
+                })
+            }
+
+            displayNewUser()
+        </script>
     </body>
 </html>

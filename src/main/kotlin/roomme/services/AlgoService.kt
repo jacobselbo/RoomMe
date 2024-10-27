@@ -61,6 +61,7 @@ class AlgoService private constructor(
 
         usersSwipedOn.addAll(user.liked)
         usersSwipedOn.addAll(user.disliked)
+        usersSwipedOn.add(user.id!!)
 
         val users = mutableListOf<User>()
 

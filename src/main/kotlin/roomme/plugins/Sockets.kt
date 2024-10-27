@@ -33,8 +33,6 @@ fun Application.configureSockets() {
     }
 
     val userService = UserDBService.instance!!
-    val logger = LoggerFactory.getLogger(this.javaClass)
-    logger.info("HELLO BITCHO!")
 
     routing {
         authenticate("auth-session") {
