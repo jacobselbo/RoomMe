@@ -9,6 +9,8 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonEncoder
+import org.bson.codecs.kotlinx.BsonDecoder
 import org.bson.codecs.kotlinx.ObjectIdSerializer
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
@@ -20,13 +22,31 @@ object DateLongSerializer : KSerializer<Date> {
     override fun deserialize(decoder: Decoder): Date = Date(decoder.decodeLong())
 }
 
+object ObjectIdStringSerializer : KSerializer<ObjectId> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "ObjectIdStringSerializer", PrimitiveKind.STRING
+    )
+    override fun serialize(encoder: Encoder, value: ObjectId) {
+        return when (encoder) {
+            is JsonEncoder -> encoder.encodeString(value.toString())
+            else -> encoder.encodeString(value.toString())
+        }
+    }
+    override fun deserialize(decoder: Decoder): ObjectId {
+        return when (decoder) {
+            is BsonDecoder -> decoder.decodeBsonValue().asObjectId().value
+            else -> throw UnsupportedOperationException()
+        }
+    }
+}
+
 @Serializable
 data class Message @OptIn(ExperimentalSerializationApi::class) constructor(
     @SerialName("sender")
-    @Serializable(with = ObjectIdSerializer::class)
+    @Serializable(with = ObjectIdStringSerializer::class)
     val sender: ObjectId,
     @SerialName("receiver")
-    @Serializable(with = ObjectIdSerializer::class)
+    @Serializable(with = ObjectIdStringSerializer::class)
     val receiver: ObjectId,
     val message: String,
     @Serializable(with = DateLongSerializer::class)

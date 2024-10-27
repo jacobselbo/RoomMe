@@ -4,7 +4,7 @@ import io.ktor.websocket.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.bson.types.ObjectId
-import roomme.plugins.SockMessage
+import roomme.serializables.SockMessage
 
 data class MessageHandler(
     val id: ObjectId,

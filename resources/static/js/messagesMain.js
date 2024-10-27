@@ -32,12 +32,13 @@ async function populateMessages() {
             messages[otherUser] = [];
         if (msg.timestamp === 0)
             continue;
-        messages[otherUser].push(msg)
+        messages[otherUser].push(msg);
     }
 
-    for (const otherUser of resp) {
-        messages[otherUser].sort((a,b) => a.timestamp - b.timestamp)
+    for (const otherUser in messages) {
+        messages[otherUser].sort((a,b) => a.timestamp - b.timestamp);
     }
+    render();
 }
 
 function sendMessage(id, message) {

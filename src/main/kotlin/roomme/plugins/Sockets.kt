@@ -14,15 +14,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.bson.types.ObjectId
 import org.slf4j.LoggerFactory
+import roomme.serializables.InMessage
 import roomme.services.MessageHandler
 import roomme.services.UserDBService
 import roomme.services.MessageService
-
-@Serializable
-data class SockMessage(val id: String, val message: String, val timestamp: Long)
-
-@Serializable
-data class InMessage(val id: String, val message: String)
 
 fun Application.configureSockets() {
     install(WebSockets) {
