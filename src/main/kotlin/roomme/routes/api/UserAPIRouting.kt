@@ -115,7 +115,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 val user = userService.findUserFromSession(session)!!
 
                 val data = messageDbService.getMessages(user)
-                val sendData = Array(data.size) { i -> 
+                val sendData = Array(data.size) { i ->
                     val message = data[i]
 
                     PublicMessage(
@@ -143,7 +143,7 @@ fun Route.routeUserAPI(userService: UserDBService) {
 
                     val setValue: Any = when (key) {
                         User::age.name, User::qSmokeVape.name, User::qDrink.name, User::qSleepSchedule.name, User::qSocial.name, User::qAloneTime.name, User::qTemperature.name -> parseInt(value)
-                        User::qOtherGenders.name, User::gender.name -> parseBoolean(value)
+                        User::qOtherGenders.name, User::gender.name, User::questionsAnswered.name -> parseBoolean(value)
                         else -> value
                     }
 
