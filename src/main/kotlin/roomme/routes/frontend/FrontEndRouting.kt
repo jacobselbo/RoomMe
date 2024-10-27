@@ -19,4 +19,8 @@ fun Routing.routeFrontEnd() {
             call.respondFile(getHTMLFile("frontend/questions.html"))
         }
     }
+
+    get("/install") {
+        call.respondFile(getHTMLFile("frontend/install.html"))
+    }
 }

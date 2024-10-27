@@ -2,7 +2,6 @@ package roomme.serializables
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -12,7 +11,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonEncoder
 import org.bson.codecs.kotlinx.BsonDecoder
 import org.bson.codecs.kotlinx.ObjectIdSerializer
-import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 import java.util.*
 

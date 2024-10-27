@@ -62,7 +62,7 @@ fun Route.routeSecurity(userService: UserDBService, hashingCost: Int, bCrypt: Ha
                 age = -1,
                 major = "",
                 hometown = "",
-                images = arrayOf(),
+                images = arrayOf("https://random.imagecdn.app/768/1024"),
 
                 toMatchWith = arrayOf(),
                 currentMatches = arrayOf(),
