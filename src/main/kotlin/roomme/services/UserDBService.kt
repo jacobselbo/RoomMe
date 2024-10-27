@@ -78,6 +78,13 @@ class UserDBService private constructor(mongoService: MongoService) {
                 success = false
                 logger.info("Failed to add ${user.id.toString()} to matched array for ${likedUser.id.toString()}")
             }
+
+            MessageDBService.instance!!.messageSent(
+                user.id!!,
+                likedUser.id!!,
+                "Successful Match!",
+                0
+            );
         } else {
             val addToMatch = users.updateOne(Filters.eq("_id", likedUser.id),
                 Updates.addToSet(User::toMatchWith.name, user.id))

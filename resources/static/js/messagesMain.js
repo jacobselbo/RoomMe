@@ -4,13 +4,13 @@ const sock = new WebSocket("ws://" + location.host + "/api/messages");
 let messages = {};
 
 async function getSelf() {
-    return (await fetch("/api/user/self", {
+    return await (await fetch("/api/user/self", {
         method: "GET"
     })).json();
 }
 
 async function getUser(id) {
-    return (await fetch("/api/user/get/" + id, {
+    return await (await fetch("/api/user/get/" + id, {
         method: "GET"
     })).json();
 }
@@ -21,7 +21,7 @@ getSelf().then((resp) => {
 })
 
 async function populateMessages() {
-    const resp = (await fetch("/api/user/messages", {
+    const resp = await (await fetch("/api/user/messages", {
         method: "GET"
     })).json();
 
@@ -30,6 +30,8 @@ async function populateMessages() {
         const otherUser = msg.sender === userID ? msg.receiver : msg.sender;
         if (!(otherUser in messages))
             messages[otherUser] = [];
+        if (msg.timestamp === 0)
+            continue;
         messages[otherUser].push(msg)
     }
 
