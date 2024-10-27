@@ -45,3 +45,7 @@
 .navbar a svg {
     height: 70%
 }
+
+body {
+    overflow: hidden;
+}

@@ -2,6 +2,7 @@
 <html lang="en" data-theme="light">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no" />
 
         <title>Messages</title>
         <link rel="icon" type="image/x-icon" href="/static/images/icon.svg">
@@ -50,8 +51,9 @@
             }
 
             async function userList() {
-                clearMessageContainer();
                 currentView.view = USER_LIST;
+
+                const newMessageContainer = document.createElement("div");
 
                 let ul = document.createElement('ul');
                 ul.classList.add("user-message-list");
@@ -65,7 +67,7 @@
                         const stampB = messages[b][messages[b].length-1].timestamp
                         return stampB - stampA;
                     });
-                messageContainer.appendChild(ul);
+                newMessageContainer.appendChild(ul);
                 for (const otherUserID of usersSorted) {
                     const li = document.createElement('li');
                     const otherUser = await getUser(otherUserID);
@@ -88,17 +90,21 @@
 </a>
 `;
                     ul.appendChild(li);
+
+                    messageContainer.innerHTML = newMessageContainer.innerHTML;
+                    newMessageContainer.remove();
                 }
             }
 
             async function messageUser() {
-                clearMessageContainer();
-
+                currentView.view = MESSAGE_USER;
                 const otherUser = await getUser(currentView.otherUserID);
+
+                const newMessageContainer = document.createElement("div");
 
                 const topBar = document.createElement("div");
                 topBar.classList.add("messages-top-bar");
-                messageContainer.append(topBar);
+                newMessageContainer.append(topBar);
                 topBar.innerHTML = `
 <span style="display: inline">
     <a style="width: 20vw" href="#" onclick="updateView({view:USER_LIST})">
@@ -132,7 +138,7 @@ ${message.message}
 
                 messageBoxEx.append(messageBoxIn);
 
-                messageContainer.append(messageBoxEx);
+                newMessageContainer.append(messageBoxEx);
                 messageBoxEx.scrollTop = messageBoxEx.scrollHeight;
 
                 const messageTextbox = document.createElement("div");
@@ -144,7 +150,10 @@ style="width: 60%; height: 15vh; resize: none; margin-left: 5%; display: inline"
 <button class="send-message" onclick="onClickSendMessage()">Send</button>
 </div>
 `;
-                messageContainer.append(messageTextbox);
+                newMessageContainer.append(messageTextbox);
+
+                messageContainer.innerHTML = newMessageContainer.innerHTML;
+                newMessageContainer.remove();
             }
 
             function updateView(newView) {
