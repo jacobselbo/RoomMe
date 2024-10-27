@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.bson.conversions.Bson
+import org.bson.types.ObjectId
 import roomme.plugins.UserSession
 import roomme.serializables.PublicUser
 import roomme.serializables.User
@@ -52,10 +53,10 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 call.respondText(Json.encodeToString(PublicUser.createPublicUser(user)))
             }
 
-            get("{userId}") {
+            get("get/{userId}") {
                 val userId: String = call.parameters["userId"]!!
                 val user = userDBService.users
-                    .find(Filters.eq("_id", userId)).firstOrNull()!!
+                    .find(Filters.eq("_id", ObjectId(userId))).firstOrNull()!!
 
                 call.respondText(Json.encodeToString(PublicUser.createPublicUser(user)))
             }

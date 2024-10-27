@@ -1,17 +1,7 @@
 
-const socket = new WebSocket("ws://" + location.host + "/api/messages");
+const sock = new WebSocket("ws://" + location.host + "/api/messages");
 
-let messages = {
-    "671d659f9d14ac05cf9e4eff": [
-        {
-            "sender": "671d659f9d14ac05cf9e4eff",
-            "receiver": "671d6aa20c5d166618535a5a",
-            "timestamp": 0,
-            "message": "Hello world!"
-        }
-    ],
-    "671d6aa20c5d166618535a5a": []
-};
+let messages = {};
 
 async function getSelf() {
     return (await fetch("/api/user/self", {
@@ -19,7 +9,16 @@ async function getSelf() {
     })).json();
 }
 
-const userID = (await getSelf()).id;
+async function getUser(id) {
+    return (await fetch("/api/user/get/" + id, {
+        method: "GET"
+    })).json();
+}
+
+let userID;
+getSelf().then((resp) => {
+    userID = resp.id;
+})
 
 async function populateMessages() {
     const resp = (await fetch("/api/user/messages", {
@@ -51,12 +50,13 @@ function sendMessage(id, message) {
         message: message,
         timestamp: Date.now()
     });
+
+    render();
 }
 
-// TODO: Uncomment
-// await populateMessages();
+populateMessages();
 
-socket.addEventListener("message", (event) => {
+sock.addEventListener("message", (event) => {
     const resp = JSON.parse(event.data);
     messages[resp.id].push({
         sender: resp.id,
@@ -64,4 +64,5 @@ socket.addEventListener("message", (event) => {
         message: resp.message,
         timestamp: resp.timestamp
     });
+    render();
 });

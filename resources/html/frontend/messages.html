@@ -9,13 +9,14 @@
         <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
 
         <link href="/static/css/theme.css" rel="stylesheet">
+        <link href="/static/css/messages.css" rel="stylesheet">
         <style>
             #messages {
                 background-color: oklch(var(--b3));
             }
         </style>
     </head>
-    <body class="h-screen">
+    <body class="h-screen font-extrabold">
         <div id="message-container"></div>
         <!-- home bar -->
         <div class="navbar p-0 bg-base-200 bottom-0 absolute">
@@ -47,11 +48,12 @@
                 messageContainer.innerHTML = '';
             }
 
-            function userList() {
+            async function userList() {
                 clearMessageContainer();
                 currentView.view = USER_LIST;
 
                 let ul = document.createElement('ul');
+                ul.classList.add("user-message-list");
                 const usersSorted = Object.keys(messages)
                     .toSorted((a,b) => {
                         if (messages[a].length === 0)
@@ -63,11 +65,104 @@
                         return stampB - stampA;
                     });
                 messageContainer.appendChild(ul);
-                for (const otherUser of usersSorted) {
+                for (const otherUserID of usersSorted) {
                     const li = document.createElement('li');
-                    li.innerHTML = `${otherUser}`;
+                    const otherUser = await getUser(otherUserID);
+                    const msgs = messages[otherUserID];
+                    let innerText;
+                    if (msgs.length === 0) {
+                        innerText = "Start the conversation!";
+                    } else {
+                        const d = new Date(msgs[msgs.length - 1].timestamp);
+                        innerText = d.toLocaleTimeString() + "&nbsp;".repeat(7) + msgs[msgs.length - 1].message;
+                    }
+                    li.innerHTML = `
+<a href="#" onclick="updateView({view:MESSAGE_USER, otherUserID: '${otherUserID}'})">
+    <div>
+        <h2>${otherUser.fullName}</h2>
+        <span class="${msgs.length === 0 ? "no-messages" : "yes-messages"}">
+            ${innerText}
+        </span>
+    </div>
+</a>
+`;
                     ul.appendChild(li);
                 }
+            }
+
+            async function messageUser() {
+                clearMessageContainer();
+
+                const otherUser = await getUser(currentView.otherUserID);
+
+                const topBar = document.createElement("div");
+                topBar.classList.add("messages-top-bar");
+                messageContainer.append(topBar);
+                topBar.innerHTML = `
+<span style="display: inline">
+    <a style="width: 20vw" href="#" onclick="updateView({view:USER_LIST})">
+        <span class="back-button">Back</span>
+    </a>
+    <span class="current-user-messaged">
+        ${otherUser.fullName}
+    </span>
+</span>
+                `;
+
+                const messageBoxEx = document.createElement("div");
+                messageBoxEx.classList.add("messagebox-external");
+
+                const messageBoxIn = document.createElement("div");
+                messageBoxIn.classList.add("messagebox-internal");
+
+                for (const message of messages[otherUser.id]) {
+                    const msgDiv = document.createElement("div");
+                    msgDiv.innerHTML = `
+<div class="chat chat-${message.sender === userID ? "end" : "start"}">
+<div class="chat-bubble">
+<p>
+${message.message}
+</p>
+</div>
+</div>
+`
+                    messageBoxIn.append(msgDiv);
+                }
+
+                messageBoxEx.append(messageBoxIn);
+
+                messageContainer.append(messageBoxEx);
+                messageBoxEx.scrollTop = messageBoxEx.scrollHeight;
+
+                const messageTextbox = document.createElement("div");
+                messageTextbox.innerHTML = `
+<div style="display: flex">
+<textarea id="message-content" placeholder="Message..."
+class="textarea textarea-bordered textarea-lg mr-5"
+style="width: 60%; height: 15vh; resize: none; margin-left: 5%; display: inline"></textarea>
+<button class="send-message" onclick="onClickSendMessage()">Send</button>
+</div>
+`;
+                messageContainer.append(messageTextbox);
+            }
+
+            function updateView(newView) {
+                currentView = newView;
+                render();
+            }
+
+            async function onClickSendMessage() {
+                console.assert(currentView.view === MESSAGE_USER, "you stupid!");
+                const txt = document.getElementById("message-content").value;
+
+                await sendMessage(currentView.otherUserID, txt);
+            }
+
+            async function render() {
+                if (currentView.view === USER_LIST)
+                    await userList();
+                else if (currentView.view === MESSAGE_USER)
+                    await messageUser();
             }
 
             userList();
