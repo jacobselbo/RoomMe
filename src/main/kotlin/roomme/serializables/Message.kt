@@ -42,10 +42,19 @@ object ObjectIdStringSerializer : KSerializer<ObjectId> {
 
 @Serializable
 data class Message @OptIn(ExperimentalSerializationApi::class) constructor(
-    @SerialName("sender")
+    @Serializable(with = ObjectIdSerializer::class)
+    val sender: ObjectId,
+    @Serializable(with = ObjectIdSerializer::class)
+    val receiver: ObjectId,
+    val message: String,
+    @Serializable(with = DateLongSerializer::class)
+    val timestamp: Date
+)
+
+@Serializable
+data class PublicMessage(
     @Serializable(with = ObjectIdStringSerializer::class)
     val sender: ObjectId,
-    @SerialName("receiver")
     @Serializable(with = ObjectIdStringSerializer::class)
     val receiver: ObjectId,
     val message: String,

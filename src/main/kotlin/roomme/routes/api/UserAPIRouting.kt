@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import org.bson.conversions.Bson
 import org.bson.types.ObjectId
 import roomme.plugins.UserSession
+import roomme.serializables.PublicMessage
 import roomme.serializables.PublicUser
 import roomme.serializables.User
 import roomme.services.AlgoService
@@ -113,7 +114,19 @@ fun Route.routeUserAPI(userService: UserDBService) {
                 val session = call.sessions.get<UserSession>()!!
                 val user = userService.findUserFromSession(session)!!
 
-                call.respondText(Json.encodeToString(messageDbService.getMessages(user)))
+                val data = messageDbService.getMessages(user)
+                val sendData = Array(data.size) { i -> 
+                    val message = data[i]
+
+                    PublicMessage(
+                        sender = message.sender,
+                        receiver = message.receiver,
+                        message = message.message,
+                        timestamp = message.timestamp
+                    )
+                }
+
+                call.respondText(Json.encodeToString(sendData))
             }
 
             post("update") {
