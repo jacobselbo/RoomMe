@@ -38,7 +38,8 @@ fun Route.routeUserAPI(userService: UserDBService) {
         User::qSocial.name,
         User::qAloneTime.name,
         User::qTemperature.name,
-        User::qOtherGenders.name
+        User::qOtherGenders.name,
+        User::questionsAnswered.name
     )
 
     val algoService = AlgoService.instance!!
