@@ -37,3 +37,4 @@ out/
 
 ### ENV ###
 .env
+run.sh
